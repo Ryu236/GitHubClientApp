@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">GitHubClientApp</string>
+    <string name="base_url">https://api.github.com/</string>
+    <string name="oauth_url">https://github.com/login/oauth/</string>
+
+    <!--oauth-->
+    <string name="dialog_title">Authorization</string>
+    <string name="dialog_message">GitHubアカウントを連携させてください</string>
+    <string name="github_callback_url">Ryu236://login</string>
 </resources>
