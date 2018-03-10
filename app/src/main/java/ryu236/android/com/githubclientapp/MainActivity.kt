@@ -12,6 +12,7 @@ import android.os.Bundle
 import android.preference.PreferenceManager
 import android.util.Log
 import android.widget.TextView
+import kotlinx.android.synthetic.main.activity_main.*
 import okhttp3.*
 import timber.log.Timber
 import java.io.IOException
@@ -32,11 +33,13 @@ class MainActivity : AppCompatActivity() {
         mAccessToken = sharedPref.getString("access_token", null)
 
         if (mAccessToken == null) {
+            Timber.tag("access_token").d("nothing!")
             val intent: Intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
             finish()
         } else {
             Timber.tag("access_token").d("gotcha!")
+            response.setText(mAccessToken, TextView.BufferType.NORMAL)
         }
 
     }
