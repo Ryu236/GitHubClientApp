@@ -6,13 +6,8 @@ import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.preference.PreferenceManager
-import android.support.customtabs.CustomTabsClient
 import android.support.customtabs.CustomTabsIntent
 import android.text.TextUtils
-import android.util.Log
-import android.view.View
-import android.widget.Button
-import android.widget.TextView
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_login.*
 import okhttp3.*
@@ -69,17 +64,20 @@ class LoginActivity : AppCompatActivity() {
     private fun getAccessToken() {
         val request: Request = Request.Builder()
                 .url(getString(R.string.oauth_url) + "access_token?" + "code=" + mCode + "&client_id=" + mClientId + "&client_secret=" + mClientSecret)
+                //.header("Accept", "application/json")
                 .build()
 
         client.newCall(request).enqueue(object: Callback {
             override fun onResponse(call: Call?, response: Response?) {
-                val uri: Uri? = Uri.parse(response?.body()?.string())
-                if (uri != null) {
+                val res: String? = response?.body()?.string()
+                if (res != null) {
                     //TODO: 成功した時のトークンについて処理を書く
+                    val access_token = res.split("&")[0].substring(13)
                     val sharedPref: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(applicationContext)
-                    sharedPref.edit().putString("access_token", uri.getQueryParameter("access_token")).apply()
-                    Timber.tag("access_token").d(uri.getQueryParameter("access_token").toString())
-
+                    sharedPref.edit().putString(getString(R.string.token), access_token).apply()
+                    Timber.tag(getString(R.string.token)).d(access_token)
+                    val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                    startActivity(intent)
                 }
             }
             override fun onFailure(call: Call?, e: IOException?) {

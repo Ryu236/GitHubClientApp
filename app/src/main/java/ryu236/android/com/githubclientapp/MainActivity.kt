@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity() {
     val mClientId: String = "128f1acba0db81b630d7"
     val mClientSecret: String = "00218364b4dccf7b70acd9b86f38520b6f6e1d41"
     var mCode: String? = null
-    var mAccessToken: String? = null
+    var mAccessToken: String = ""
     val client: OkHttpClient = OkHttpClient()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,15 +30,15 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val sharedPref: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(applicationContext)
-        mAccessToken = sharedPref.getString("access_token", null)
+        mAccessToken = sharedPref.getString(getString(R.string.token), "")
 
-        if (mAccessToken == null) {
-            Timber.tag("access_token").d("nothing!")
-            val intent: Intent = Intent(this, LoginActivity::class.java)
+        if (mAccessToken.isEmpty()) {
+            Timber.tag(getString(R.string.token)).d("nothing!")
+            val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
             finish()
         } else {
-            Timber.tag("access_token").d("gotcha!")
+            Timber.tag(getString(R.string.token)).d("gotcha!")
             response.setText(mAccessToken, TextView.BufferType.NORMAL)
         }
 

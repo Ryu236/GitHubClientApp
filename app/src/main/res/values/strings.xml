@@ -7,4 +7,5 @@
     <string name="dialog_title">Authorization</string>
     <string name="dialog_message">GitHubアカウントを連携させてください</string>
     <string name="github_callback_url">Ryu236://login</string>
+    <string name="token">Access_token</string>
 </resources>
